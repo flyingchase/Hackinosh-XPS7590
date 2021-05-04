@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SupportAssistPrebootDiagnosticLog>
+    <Schema>1.0.0</Schema>
+    <LogNumber>63</LogNumber>
+    <LogTimeStamp>05/04/2021 11:47:58</LogTimeStamp>
+    <ePSA_Data>
+      <Result>Not Reported</Result>
+      <ReturnCode>BOOT_HOST_OS</ReturnCode>
+      <ePSAFullVersion>4400.13</ePSAFullVersion>
+      <ePSAInvocationCount>8</ePSAInvocationCount>
+    </ePSA_Data>
+    <BIOS_Data>
+      <ErrorCategory>POWER_SUPPLY</ErrorCategory>
+      <ErrorMessage><![CDATA[You have plugged in a lower wattage power adapter, USB-C charging device,
+or power pass-through device.
+Your system will continue to work, but may not perform at its peak.
+]]></ErrorMessage>
+      <Flags>DISABLE_IN_SETUP</Flags>
+      <SOS_Available>FALSE</SOS_Available>
+      <TimeOutSeconds>0</TimeOutSeconds>
+    </BIOS_Data>
+  </SupportAssistPrebootDiagnosticLog>
