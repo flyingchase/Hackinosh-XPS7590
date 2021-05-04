@@ -92,9 +92,15 @@ Bios雷电设置最低权限 取消auto相关设置
 解锁EC�风扇控制位，动态注入风扇控制
 目前采用bios关闭DPTF解决此问题
 
-
+ Bios中无此设置选项
 
 DPTF全称Dynamic Platform and Thermal Framework，
+
+查找后发现是电源供电原因 外接4k屏幕的type-c供电为60w 会出现锁频现象
+
+插上原厂傻大粗电源立刻恢复正常频率睿频
+
+git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即可——>待办
 
 
 
