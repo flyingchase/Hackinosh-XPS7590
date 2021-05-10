@@ -102,7 +102,69 @@ DPTF全称Dynamic Platform and Thermal Framework，
 
 git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即可——>待办
 
+### LCD亮度调节
 
+改为`Fn+S/B`
+
+
+
+### 睡眠后蓝牙不可用
+
+睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
+
+将蓝牙内建后+睡眠修复(hackintosh)完成
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PciRoot(0x0)/Pci(0x1c,0x0)/Pci(0x0,0x0)</key>
+	<dict>
+		<key>AAPL,slot-name</key>
+		<string>WLAN</string>
+		<key>compatible</key>
+		<string>pci14e4,43a3</string>
+		<key>device-type</key>
+		<string>Airport Extreme</string>
+		<key>model</key>
+		<string>DW1820A (BCM4350) 802.11ac Wireless</string>
+		<key>name</key>
+		<string>Airport</string>
+		<key>pci-aspm-default</key>
+		<integer>0</integer>
+	</dict>
+</dict>
+</plist>
+
+
+
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PciRoot(0x0)/Pci(0x1c,0x0)/Pci(0x0,0x0)</key>
+	<dict>
+		<key>AAPL,slot-name</key>
+		<string>WLAN</string>
+		<key>compatible</key>
+		<string>pci14e4,43a3</string> // 也有改为43a0的
+		<key>device-type</key>
+		<string>Airport Extreme</string>
+		<key>model</key>
+		<string>DW1820A (BCM4350) 802.11ac Wireless</string>
+		<key>name</key>
+		<string>Airport</string>
+		<key>pci-aspm-default</key>
+		<integer>0</integer>
+	</dict>
+</dict>
+</plist>
+
+```
+
+![lL2kFd](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/lL2kFd.png)
 
 
 
@@ -121,7 +183,7 @@ git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即�
 
  
 
-
+#### 
 
 
 
