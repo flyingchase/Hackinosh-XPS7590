@@ -1,5 +1,9 @@
 # XPS 7590 Hackinosh黑苹果
 
+## 注意⚠️
+
+本 EFI 适用于 bigsur 11.1-11.2.2  其余版本未经过测试
+
 ##  参考
 
 GitHub:
@@ -41,6 +45,8 @@ https://www.imacpc.net/archives/1549
 
 
 
+dvmt-preallocted 设置为 96MB
+
 ## Bug
 
 
@@ -51,7 +57,7 @@ https://www.imacpc.net/archives/1549
 
 - OC引导Big Sur卡在`IOConsoleUsers: gIOScreenLockState 3, hs 0, bs 0 now` 注入苹果显示器EDID 48HZ (45 46字节替换为A6A6 再使用128计算最后一位字节 )
 -  DeviceP.. 删除注入EDID 
-  - WhateverGreen [978cb8](https://github.com/acidanthera/WhateverGreen/commit/978cb8c7a744ac189074225fd8eb2f16feb5a4c0) 能让内屏运行于 60Hz 了，不再需要 48Hz 补丁，Release [201218](https://github.com/xxxzc/xps15-9570-macos/releases/tag/201218) 包含了这个 WhateverGreen 并且修改了相关属性，可以直接使用。如果想要自己修改，可以看提交改了啥。
+  - WhateverGreen [978cb8](https://github.com/acidanthera/WhateverGreen/commit/978cb8c7a744ac189074225fd8eb2f16feb5a4c0) 能让内屏运行于 60Hz 了，不再需要 48Hz 补丁，Release [201218](https://github.com/xxxzc/xps15-9570-macos/releases/tag/201218) 包含了这个 WhateverGreen 并且修改了相关属性，可以直接使用。（链接指向其他 EFI）
 
 ### 显示器描述文件
 
@@ -73,6 +79,8 @@ UI 4K设置: dlcd-max 1400000 UIscale—>02
 
 Bios雷电设置最低权限 取消auto相关设置
 
+取消 IOElectrify.kext 和 type-c 的 SSDT 仅开启 SSDT-TB3 仍可
+
 
 
 ### 睡眠唤醒后重启
@@ -85,7 +93,7 @@ Bios雷电设置最低权限 取消auto相关设置
 
 注入引导参数bpr_probedelay=100 bpr_initialdelay=300 bpr_postresetdelay=300
 
-
+内建后可用
 
 ### 关于0.8ghz锁频
 
@@ -104,11 +112,13 @@ git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即�
 
 改造散热VRM后有效 降频次数减少 时间缩短为几秒
 
+替换cpufriends 后改善
+
 ### LCD亮度调节
 
 改为`Fn+S/B`
 
-
+karabiner软件实现快捷键
 
 ### 睡眠后蓝牙不可用
 
@@ -191,9 +201,7 @@ git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即�
 
 Waiting To Slove:
 
-1. type-c传输无声音;
-2. 键位对调,cmd和option;
-3. 
+1. 
 
  
 
