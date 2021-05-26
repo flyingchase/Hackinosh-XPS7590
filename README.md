@@ -246,7 +246,9 @@ System Agency offset: -75mv
 
 
 
+### 5.3 DVMT offset修改为96MB
 
+Bios修改 使用UEFI和Bios提取工具 setup_var_3 0x** 0x03 地址未确定（待定优化） 目前使用WEG也蛮好 闪屏现象基本消失
 
-
+ 
 
