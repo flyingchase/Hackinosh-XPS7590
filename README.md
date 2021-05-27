@@ -53,27 +53,31 @@ dvmt-preallocted 设置为 96MB
 
 
 
-### 3.1 啰嗦模式
-
-
+### 3.1 啰嗦模式问题
 
 - OC引导Big Sur卡在`IOConsoleUsers: gIOScreenLockState 3, hs 0, bs 0 now` 注入苹果显示器EDID 48HZ (45 46字节替换为A6A6 再使用128计算最后一位字节 )
--  DeviceP.. 删除注入EDID 
-  - WhateverGreen [978cb8](https://github.com/acidanthera/WhateverGreen/commit/978cb8c7a744ac189074225fd8eb2f16feb5a4c0) 能让内屏运行于 60Hz 了，不再需要 48Hz 补丁，Release [201218](https://github.com/xxxzc/xps15-9570-macos/releases/tag/201218) 包含了这个 WhateverGreen 并且修改了相关属性，可以直接使用。（链接指向其他 EFI）
 
-### 3.2 显示器描述文件
+- DeviceP.. 删除注入EDID 
+
+- 现在新版WhateverGreen kexts 可以直接内屏 60Hz——>无须注入 EDID
+
+  
+
+### 3.2 4k内屏闪屏
 
 
 
 使用`ioreg -lw0 | grep IODisplayEDID | sed "/[^<]*</s///" | xxd -p -r | strings -6` 查看屏幕的生产型号
-
-
 
 夏普屏幕安装对应的显示器描述文件, 位置`/Library/ColorSync/Profiles`
 
 外接4k显示器 延迟高 卡顿: 重建缓存解决 `sudo kextchache -i\`
 
 UI 4K设置: dlcd-max 1400000 UIscale—>02
+
+
+
+目前type-c 低电压输入下首次链接type-c仍然出现
 
 ### 3.3 雷电3设备
 
@@ -85,30 +89,10 @@ Bios雷电设置最低权限 取消auto相关设置
 
 
 
-### 3.4 睡眠唤醒后重启
-
-电池供电下睡眠唤醒后重启——>与TB3有关
-
-
-
-### 3.5 睡眠后蓝牙无法使用
-
-注入引导参数bpr_probedelay=100 bpr_initialdelay=300 bpr_postresetdelay=300
-
-内建后可用
-
-### 3.6 关于0.8ghz锁频
+### 3.5 关于0.8ghz锁频
 
 解锁EC�风扇控制位，动态注入风扇控制
 目前采用bios关闭DPTF解决此问题
-
- Bios中无此设置选项
-
-DPTF全称Dynamic Platform and Thermal Framework，
-
-
-
-git上有网友表示可以拔掉电池 按住开机键5s后再装上电池即可——>无用
 
 
 
@@ -124,33 +108,9 @@ karabiner软件实现快捷键
 
 ### 3.8 睡眠后蓝牙不可用
 
-睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
+Q: 睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
 
-将蓝牙内建后+睡眠修复(hackintosh)完成
-
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>PciRoot(0x0)/Pci(0x1c,0x0)/Pci(0x0,0x0)</key>
-	<dict>
-		<key>AAPL,slot-name</key>
-		<string>WLAN</string>
-		<key>compatible</key>
-		<string>pci14e4,43a3</string>
-		<key>device-type</key>
-		<string>Airport Extreme</string>
-		<key>model</key>
-		<string>DW1820A (BCM4350) 802.11ac Wireless</string>
-		<key>name</key>
-		<string>Airport</string>
-		<key>pci-aspm-default</key>
-		<integer>0</integer>
-	</dict>
-</dict>
-</plist>
-
+​	1. 将蓝牙内建后+睡眠修复(hackintosh) —>仍然出现
 
 
 ```html
@@ -182,7 +142,7 @@ karabiner软件实现快捷键
 
 
 
-上述无效, 屏蔽背面两脚针后生效;
+​	2. 屏蔽背面两脚针后生效
 
 ### 3.9 替换主板编号后 12 位后触控板二指失效
 
@@ -227,14 +187,18 @@ https://github.com/stakeout55/presigned_VoltageShift_Kext_DellXPS7590
 
 偏移设置 -110 -92 -110  亦可设置为 
 
+```shell
 CPU voltage offset: -125mv
 GPU voltage offset: -125mv
 CPU Cache voltage offset: -125mv
 System Agency offset: -75mv
+```
 
 更改设置时先执行remove再launchd
 
-![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
+`sudo ./voltageshift buildlaunchd -125 -125 -125 -75 0 0 60`
+
+`sudo ./voltageshift removelaunchd`![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
 
 
 
