@@ -31,7 +31,7 @@ GitHub:
 | 型号 | XPS15-7590        | Cpu  |   i7-9750h    |
 | 屏幕 | 4k 夏普触控屏     | 网卡 | Dw1820a(更换) |
 | 固态 | SN720 512G        | 声卡 | ALC298(原生)  |
-| 内存 | 48G(32+16) 英睿达 | Bios |               |
+| 内存 | 48G(32+16) 英睿达 | Bios |    v1.7.0     |
 
 ### 2.2 Bios设置
 
@@ -87,7 +87,11 @@ Bios雷电设置最低权限 取消auto相关设置
 
 取消 IOElectrify.kext 和 type-c 的 SSDT 仅开启 SSDT-TB3 仍可
 
+BIOS 设置：
 
+​	ThunderBolt Adapter Configuration：勾选 Thunder 和 NoSecurity 其他关闭
+
+​	ThunderBolt Auto Switch：取消 AutoSwitch 勾选 Native Enumeration
 
 ### 3.5 关于0.8ghz锁频
 
@@ -196,7 +200,7 @@ System Agency offset: -75mv
 
 更改设置时先执行remove再launchd
 
-`sudo ./voltageshift buildlaunchd -125 -125 -125 -75 0 0 60`
+`sudo ./voltageshift buildlaunchd -125 -125 -125 -75 0 0 20`
 
 `sudo ./voltageshift removelaunchd`![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
 
@@ -210,9 +214,29 @@ System Agency offset: -75mv
 
 
 
-### 5.3 DVMT offset修改为96MB
+### 5.3 DVMT offset修改为128MB—>解决4k 内屏/低电压 type-c 输入时外接 4k显示器闪屏
 
-Bios修改 使用UEFI和Bios提取工具 setup_var_3 0x** 0x03 地址未确定（待定优化） 目前使用WEG也蛮好 闪屏现象基本消失
+- 在 Window 下使用 DELL_PFS_Extract 工具实现官网对应本机 BIOS.exe 文件提取.bin 文件 （使用方式为将 bios.exe 直接拖到应用图标上打开即可） 感谢远景论坛网友的分享
 
- 
+- 得到文件中`1 -- 1 System BIOS with BIOS Guard.bin `为待提取文件
+
+- 使用 UEFI Tool 打开`.bin`文件 
+
+  - 查找`DVMT`并定位到 PE32![hiBhVr](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/hiBhVr.png)
+
+  - 将 PE32 处导出为 `Section_PE32_image_Setup.sct  `文件 ![GET145](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/GET145.png)
+
+    - 使用 `ifrextract`工具将 `.sct`文件转化为 `.txt`格式 再查找 CFG/DVMT 等offset 偏移量
+
+    - 参考 CFG 解锁制作的 UEFI 引导盘 使用命令`setup_var_3 0xA11 0x02/0x03` 设置 再使用`setup_var_3 0xA10 0x04` 设置为 128MB
+
+      ![FXa9XI](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/FXa9XI.png)
+
+      ![yKs00E](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/yKs00E.png)
+
+自此，4k 内屏在使用新版 WhateverGreen.kext 基础上配置相应的 framebuffer补丁后，在低电压45/60w 的PD 充电高负载场景、外接 4k 显示器并睡眠唤醒情况下均为出现闪屏现象
+
+
+
+
 
