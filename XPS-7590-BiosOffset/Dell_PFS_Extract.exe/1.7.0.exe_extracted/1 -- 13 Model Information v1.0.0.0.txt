@@ -1,0 +1,5 @@
+VendorName=Dell Inc.
+OemString=Model_File
+SystemName=XPS 15 7590/Precision 5540
+Version=1.7.0
+Model=0905,0906
