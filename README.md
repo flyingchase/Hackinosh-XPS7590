@@ -6,6 +6,8 @@
 
 仅为个人使用，故 README 写的杂乱，欢迎交流推进 XPS-7590 的 Hackintosh 进程
 
+部分内容涉及 BIOS 修改 有硬件损坏的风险
+
 ##  1 参考
 
 GitHub:
@@ -95,22 +97,45 @@ BIOS 设置：
 
 ### 3.5 关于0.8ghz锁频
 
-解锁EC�风扇控制位，动态注入风扇控制
-目前采用bios关闭DPTF解决此问题
+> 资讯：
+>
+> ​	解锁EC�风扇控制位，动态注入风扇控制
+> ​	目前采用bios关闭DPTF解决此问题
+
+个人尝试：
+
+1. 改造散热VRM后有效 降频次数减少 时间缩短为几秒
+
+2. 替换cpufriends 后改善极少出现锁频情况 实现27档变频
+3. 拔掉电池  按开机键释放主板静电 放置 5mins 后插上电池开机——>无效
+
+3. 更改 DVMT 的最大值从 256 到 MAX（BIOS 内pre-allocation 没有 128MB 分配的可选项 最大 64MB） 无效
+
+4. 使用 voltageshift 降压后 偶尔出现
+
+   Intel Power Gradget 动态监测在高负载出现 0.78ghz 锁频时插入原装 dell 充电器cpu 频率恢复正常但五秒后再次锁0.8ghz 此时拔出电源又恢复正常 但五秒后重复锁频
+
+   即拔掉电源线以改善性能——>醉了
+
+5. 修改 BIOS 中的 Bi-dorectional PROCHOT  关闭——>修改 BIOS 有风险 ⚠️
+
+   > 查找有指出可能是主板上温度传感器出错 使用 5.3 中修改 BIOS 方法`setup_var_3 0x724 0x00 `关闭 BD PROCHOT
+   >
+   > [CPU 风扇停转后发生什么](https://zhuanlan.zhihu.com/p/27624654)
 
 
 
-改造散热VRM后有效 降频次数减少 时间缩短为几秒
+总结：
 
-替换cpufriends 后改善极少出现锁频情况 实现27档变频
+​	目前应该是主板上元件损坏 可能是网友指出的温度传感器/部分供电线损坏 可能是长期高温负载运行造成的故障
 
 ### 3.7 LCD亮度调节
 
 改为`Fn+S/B`
 
-karabiner软件实现快捷键
+- karabiner软件实现快捷键更改
 
-### 3.8 睡眠后蓝牙不可用
+### 3.6 睡眠后蓝牙不可用
 
 Q: 睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
 
@@ -152,9 +177,20 @@ Q: 睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
 
 退出 iCloud 并在其他设备上删除本机，重新修改二码，清除 NVRM 开机重建缓存，设置触控板三指/二指拖 玄学好了。。。
 
+### 3.8 Hackintool 中工具无法查看 CFG 信息
 
+总是在安全性与隐私中 允许签名再重启
 
+https://www.mfpud.com/topics/4303/ 
 
+```shell
+# 进入 Hackintool 程序包内Content-resources-kexts
+sudo chown -R root:wheel AppleIntelInfo.kext
+sudo kextutil AppleIntelInfo.kext
+sudo cat /tmp/AppleIntelInfo.dat
+# 最后取消注入驱动
+sudo kextunload AppleIntelInfo.kext
+```
 
 ## 4 三码更新
 
@@ -169,40 +205,55 @@ Q: 睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
 
 ​	该法使得 imessage 和 facetime 体验提升巨大
 
-
-
-
-
-
-
-
-
 ## 5 优化
 
 ### 5.1 CPU降压调节
 
 使用`voltageShif`调节，主要参考：
 
-https://www.insanelymac.com/forum/topic/331775-guide-how-to-undervolt-your-haswell-and-above-cpu/
+[Guide-undervolt](https://www.insanelymac.com/forum/topic/331775-guide-how-to-undervolt-your-haswell-and-above-cpu/)
 
-https://github.com/stakeout55/presigned_VoltageShift_Kext_DellXPS7590
+[XPS-7590_VoltageShift](https://github.com/stakeout55/presigned_VoltageShift_Kext_DellXPS7590)
 
 感谢！
 
-偏移设置 -110 -92 -110  亦可设置为 
-
-```shell
-CPU voltage offset: -125mv
-GPU voltage offset: -125mv
-CPU Cache voltage offset: -125mv
-System Agency offset: -75mv
-```
 
 更改设置时先执行remove再launchd
 
-`sudo ./voltageshift buildlaunchd -125 -125 -125 -75 0 0 20`
+`sudo ./voltageshift buildlaunchd <CPU> <GPU> <CPUCache> <SA> <AI/O> <DI/O> <turbo> <pl1> <pl2> <remain> <UpdateMins (0 only apply at bootup)>`
 
-`sudo ./voltageshift removelaunchd`![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
+`sudo ./voltageshift buildlaunchd -135 -92 -125 -75 0 0 1 75 90 1 60`
+
+打开 turbo 并设置 PL1 56w PL2 90w  将 kexts 留在系统中并 60mins 执行一次
+
+>https://github.com/syscl/CPUTune
+>
+>https://github.com/SeptemberHX/VoltageShift
+>
+>```shell
+>sudo chown -R root:wheel VoltageShift.kext
+>chmod +x voltageshift
+>
+>
+># load kexts
+>./voltageshift loadkext
+># OR 
+>sudo kextutil  -r ./  -b com.sicreative.VoltageShift
+>
+># unload kexts 
+>./voltageshift unloadkext
+># OR
+>sudo kextunload -b com.sicreative.VoltageShift
+>
+># 检查是否 load kexts
+>kextstat | grep -v com.apple
+>
+># 下述两条命令使得 voltageshift 在任意地方均可执行
+> sudo cp -r VoltageShift.kext /Library/Extensions/
+> sudo cp voltageshift /usr/local/bin
+>```
+
+![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
 
 
 
@@ -210,7 +261,7 @@ System Agency offset: -75mv
 
 注入ALC守护进程即可
 
-
+``
 
 
 
@@ -228,15 +279,15 @@ System Agency offset: -75mv
 
     - 使用 `ifrextract`工具将 `.sct`文件转化为 `.txt`格式 再查找 CFG/DVMT 等offset 偏移量
 
-    - 参考 CFG 解锁制作的 UEFI 引导盘 使用命令`setup_var_3 0xA11 0x02/0x03` 设置 再使用`setup_var_3 0xA10 0x04` 设置为 128MB
+    - 参考 CFG 解锁制作的 UEFI 引导盘 使用命令`setup_var_3 0xA11 0x02/0x03` 设置 再使用`setup_var_3 0xA10 ***`   但是 BIOS 设置无 64MB更大
 
       ![FXa9XI](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/FXa9XI.png)
 
       ![yKs00E](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/yKs00E.png)
 
-自此，4k 内屏在使用新版 WhateverGreen.kext 基础上配置相应的 framebuffer补丁后，在低电压45/60w 的PD 充电高负载场景、外接 4k 显示器并睡眠唤醒情况下均为出现闪屏现象
+配合 WEG.kext 设置 dvmt 属性可以有效解决上述问题
 
-
+4k 内屏在使用新版 WhateverGreen.kext 基础上配置相应的 framebuffer补丁后，在低电压45/60w 的PD 充电高负载场景、外接 4k 显示器并睡眠唤醒情况下均未出现闪屏现象
 
 
 
