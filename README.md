@@ -107,6 +107,7 @@ BIOS 设置：
 1. 改造散热VRM后有效 降频次数减少 时间缩短为几秒
 
 2. 替换cpufriends 后改善极少出现锁频情况 实现27档变频
+
 3. 拔掉电池  按开机键释放主板静电 放置 5mins 后插上电池开机——>无效
 
 3. 更改 DVMT 的最大值从 256 到 MAX（BIOS 内pre-allocation 没有 128MB 分配的可选项 最大 64MB） 无效
@@ -122,12 +123,34 @@ BIOS 设置：
    > 查找有指出可能是主板上温度传感器出错 使用 5.3 中修改 BIOS 方法`setup_var_3 0x724 0x00 `关闭 BD PROCHOT
    >
    > [CPU 风扇停转后发生什么](https://zhuanlan.zhihu.com/p/27624654)
+   
+   关闭 BD 后仍然出现，但使用电池供电很少出现
+   
+7. 爬远景评论发现以下几种方式
+
+   1. 拔掉电池 按住开机键 20s 再装上电池 使用电池供电开机后再插上电源
+   2. dell 原装圆孔充电器接口内针口损坏——>使用手电筒照射充电器圆孔内部看不大清，但是本机使用 type-c供电出现0.78ghz锁频的次数更多
+   
+8. 交流群内提供 BIOS 降压方式：
+
+   ``` shell
+   0x855 0x01
+   0x856 0x01
+   0x85B 0x64
+   0x85D 0x01
+   0xAFF 0x1E
+   0xB01 0x01
+   ```
 
 
 
-总结：
+现状：
 
-​	目前应该是主板上元件损坏 可能是网友指出的温度传感器/部分供电线损坏 可能是长期高温负载运行造成的故障
+​	重 GPU 需求下仍然出现降频 0.8ghz 现象 拔出电源恢复几秒后再次降频 视负载情况恢复正常睿频 大概在 10s-Long 最长有过持续十分钟
+
+ 总结：
+
+​	目前存在可能是主板上元件损坏/原装充电器圆孔内针脚损坏/BIOS需要更新
 
 ### 3.7 LCD亮度调节
 
@@ -261,11 +284,13 @@ sudo kextunload AppleIntelInfo.kext
 
 注入ALC守护进程即可
 
-``
 
 
 
-### 5.3 DVMT offset修改为128MB—>解决4k 内屏/低电压 type-c 输入时外接 4k显示器闪屏
+
+### 5.3 DVMT offset修改为最大值 MAX
+
+解决4k 内屏/低电压 type-c 输入时外接 4k显示器闪屏
 
 - 在 Window 下使用 DELL_PFS_Extract 工具实现官网对应本机 BIOS.exe 文件提取.bin 文件 （使用方式为将 bios.exe 直接拖到应用图标上打开即可） 感谢远景论坛网友的分享
 
@@ -290,4 +315,38 @@ sudo kextunload AppleIntelInfo.kext
 4k 内屏在使用新版 WhateverGreen.kext 基础上配置相应的 framebuffer补丁后，在低电压45/60w 的PD 充电高负载场景、外接 4k 显示器并睡眠唤醒情况下均未出现闪屏现象
 
 
+
+
+
+
+
+## 其他待整理
+
+大部分通用的ACPI
+
+> 笔记本背光亮度调节 SSDT-PNLF.aml SSDT-ALS0.aml
+> 睡眠秒唤醒 SSDT-GPRW SSDT-UPRW
+
+不通用的ACPI
+
+> 电量显示0 SSDT-BATT.aml
+> 节能 SSDT-PLUG
+> 禁用独显 SSDT-DDGPU.aml
+> 解除USB端口限制 SSDT-EC.aml
+> 苹果原生电源管理SSDT-PLUG.aml
+
+
+
+
+
+
+
+### 网络接口
+
+wifi 非 en0
+
+1. 进入系统设置-网络，删除左边列表所有项
+2. 删除 `/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist`
+3. 重启电脑
+4. 进入系统设置-网络，点击左侧的 '+'，将 Wi-Fi 添加回来。
 
