@@ -217,6 +217,8 @@ sudo kextunload AppleIntelInfo.kext
 
 ## 4 三码更新
 
+[三码参考链接-写的很详细很完备](https://heipg.cn/tutorial/macserial-and-iservice-opencore.html)
+
 使用`opencorepkg`下载下来的   `macserial`内置程序进行PlatformInfo-Generic-MLB和SystemSeriaNumber填写(先在apple序列号保修查询官网确保未使用过) 
 
 重启后:
@@ -227,6 +229,8 @@ sudo kextunload AppleIntelInfo.kext
 ⚠️：SystemUUID最后的十二位替换为网卡的mac地址 （mac地址中:去除并将所有小写字母大写再去替换）
 
 ​	该法使得 imessage 和 facetime 体验提升巨大
+
+ROM：修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空格
 
 ## 5 优化
 
