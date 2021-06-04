@@ -83,17 +83,28 @@ UI 4K设置: dlcd-max 1400000 UIscale—>02
 
 ### 3.3 雷电3设备
 
-使用SSDT-TB3和SSDT-TYPEC和kexts内的IOElectrify
-
-Bios雷电设置最低权限 取消auto相关设置
-
-取消 IOElectrify.kext 和 type-c 的 SSDT 仅开启 SSDT-TB3 仍可
-
 BIOS 设置：
 
 ​	ThunderBolt Adapter Configuration：勾选 Thunder 和 NoSecurity 其他关闭
 
 ​	ThunderBolt Auto Switch：取消 AutoSwitch 勾选 Native Enumeration
+
+​	BIOS修改：
+
+``` shell
+setup_var 0x4F0 0x01
+setup_var 0x4F6 0x01
+```
+
+关闭其他 type-c 和tb3 相关的 ssdt 使用TbtOnPch.aml 并 patch 修改_E42 to XE42 
+
+重置 nvrm 后即可
+
+<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/6XeA6p.png" alt="6XeA6p" style="zoom:50%;" />
+
+注意第一次睡眠前拔掉雷电设备或者采用开机后即睡眠再唤醒
+
+感谢群内大佬！
 
 ### 3.5 关于0.8ghz锁频
 
@@ -150,7 +161,9 @@ BIOS 设置：
 
  总结：
 
-​	目前存在可能是主板上元件损坏/原装充电器圆孔内针脚损坏/BIOS需要更新
+​	目前存在可能是主板上元件损坏/原装充电器圆孔内针脚损坏/BIOS需要更新或者刷低版/电池不合格需要更换
+
+
 
 ### 3.7 LCD亮度调节
 
