@@ -322,7 +322,7 @@ sudo kextunload AppleIntelInfo.kext
 
 ## 其他待整理
 
-大部分通用的ACPI
+### ACPI整理：
 
 > 笔记本背光亮度调节 SSDT-PNLF.aml SSDT-ALS0.aml
 > 睡眠秒唤醒 SSDT-GPRW SSDT-UPRW
@@ -334,10 +334,6 @@ sudo kextunload AppleIntelInfo.kext
 > 禁用独显 SSDT-DDGPU.aml
 > 解除USB端口限制 SSDT-EC.aml
 > 苹果原生电源管理SSDT-PLUG.aml
-
-
-
-
 
 
 
