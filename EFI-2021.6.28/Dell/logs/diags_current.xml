@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SupportAssistPrebootDiagnosticLog>
+    <Schema>1.0.0</Schema>
+    <LogNumber>77</LogNumber>
+    <LogTimeStamp>06/01/2021 10:03:06</LogTimeStamp>
+    <ePSA_Data>
+      <Result>Pass</Result>
+      <ReturnCode>BOOT_SHUTDOWN</ReturnCode>
+      <DevicesTested>User Selected</DevicesTested>
+      <LogData>
+        <ePSALogTimeStamp>06/01/2021 10:00:41</ePSALogTimeStamp>
+        <ePSAVersion>4400.13</ePSAVersion>
+        <ErrorCode>2000:0000</ErrorCode>
+        <FailedSubTest>XMATS32_TEST</FailedSubTest>
+        <ValidationCode>74683</ValidationCode>
+        <ErrorMessage><![CDATA[ePSA extended test pass]]></ErrorMessage>
+      </LogData>
+      <MemRxHealed>FALSE</MemRxHealed>
+      <ePSAInfo><![CDATA[serviceTag=G0KT3X2&errCode=0000&ValCode=74683&uID=088D5]]></ePSAInfo>
+      <ePSAFullVersion>4400.13</ePSAFullVersion>
+      <ePSAInvocationCount>2</ePSAInvocationCount>
+    </ePSA_Data>
+    <BIOS_Data>
+      <ErrorCategory>BATTERY</ErrorCategory>
+      <ErrorMessage><![CDATA[WARNING: Battery is low.
+]]></ErrorMessage>
+      <FRU_String><![CDATA[Unknown Battery]]></FRU_String>
+      <SOS_Available>FALSE</SOS_Available>
+      <TimeOutSeconds>0</TimeOutSeconds>
+    </BIOS_Data>
+  </SupportAssistPrebootDiagnosticLog>
