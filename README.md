@@ -21,6 +21,8 @@ GitHub:
 - https://github.com/stakeout55/Dell-XPS-7590-mac-OS-Big-Sur-11.1
 - https://github.com/xxxzc/xps15-9570-macos/issues/69
 
+- 各大QQ群内大佬的无私分享
+
 
 
 
@@ -38,6 +40,9 @@ GitHub:
 ### 2.2 Bios设置
 
 雷电设置关键
+
+- ThunderBolt Adapter Configuration：勾选 Thunder 和 NoSecurity 其他关闭
+- ThunderBolt Auto Switch：取消 AutoSwitch 勾选 Native Enumeration
 
 ### 2.3 CFG解锁
 
@@ -104,7 +109,7 @@ setup_var 0x4F6 0x01
 
 注意第一次睡眠前拔掉雷电设备或者采用开机后即睡眠再唤醒
 
-感谢群内大佬！
+感谢群内大佬！ 
 
 ### 3.5 关于0.8ghz锁频
 
@@ -161,11 +166,11 @@ setup_var 0x4F6 0x01
 
  总结：
 
-​	目前存在可能是主板上元件损坏/原装充电器圆孔内针脚损坏/BIOS需要更新或者刷低版/电池不合格需要更换
+​	目前存在可能是主板上元件损坏/~~原装充电器圆孔内针脚损坏~~/BIOS需要更新或者刷低版/电池不合格需要更换
 
 
 
-### 3.7 LCD亮度调节
+### 3.6 LCD亮度调节
 
 改为`Fn+S/B`
 
@@ -205,15 +210,13 @@ Q: 睡眠开机后蓝牙显示打开但不可连接设备 不可搜索新设备
 
 ![lL2kFd](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/lL2kFd.png)
 
-
-
 ​	2. 屏蔽背面两脚针后生效
 
-### 3.9 替换主板编号后 12 位后触控板二指失效
+### 3.8 替换主板编号后 12 位后触控板二指失效
 
 退出 iCloud 并在其他设备上删除本机，重新修改二码，清除 NVRM 开机重建缓存，设置触控板三指/二指拖 玄学好了。。。
 
-### 3.8 Hackintool 中工具无法查看 CFG 信息
+### 3.9 Hackintool 中工具无法查看 CFG 信息
 
 总是在安全性与隐私中 允许签名再重启
 
@@ -239,32 +242,32 @@ sudo kextunload AppleIntelInfo.kext
 `ioreg -d2 -c IOPlatformExpertDevice | awk -F\" '/IOPlatformUUID/{print $(NF-1)}’
    `获得本机主班的UUID填入SystemUUID
 
-⚠️：SystemUUID最后的十二位替换为网卡的mac地址 （mac地址中:去除并将所有小写字母大写再去替换）
+⚠️：**SystemUUID**最后的十二位替换为网卡的mac地址 （mac地址中:去除并将所有小写字母大写再去替换）
 
 ​	该法使得 imessage 和 facetime 体验提升巨大
 
-ROM：修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空格
+config中**ROM：**修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空格
 
 ## 5 优化
 
 ### 5.1 CPU降压调节
 
-使用`voltageShif`调节，主要参考：
+- 使用`voltageShif`调节，主要参考：
 
-[Guide-undervolt](https://www.insanelymac.com/forum/topic/331775-guide-how-to-undervolt-your-haswell-and-above-cpu/)
+  [Guide-undervolt](https://www.insanelymac.com/forum/topic/331775-guide-how-to-undervolt-your-haswell-and-above-cpu/)
 
-[XPS-7590_VoltageShift](https://github.com/stakeout55/presigned_VoltageShift_Kext_DellXPS7590)
+  [XPS-7590_VoltageShift](https://github.com/stakeout55/presigned_VoltageShift_Kext_DellXPS7590)
 
-感谢！
+  感谢！
 
 
-更改设置时先执行remove再launchd
+  更改设置时先执行remove再launchd
 
-`sudo ./voltageshift buildlaunchd <CPU> <GPU> <CPUCache> <SA> <AI/O> <DI/O> <turbo> <pl1> <pl2> <remain> <UpdateMins (0 only apply at bootup)>`
+  `sudo ./voltageshift buildlaunchd <CPU> <GPU> <CPUCache> <SA> <AI/O> <DI/O> <turbo> <pl1> <pl2> <remain> <UpdateMins (0 only apply at bootup)>`
 
-`sudo ./voltageshift buildlaunchd -135 -92 -125 -75 0 0 1 75 90 1 60`
+  `sudo ./voltageshift buildlaunchd -135 -92 -125 -75 0 0 1 75 90 1 60`
 
-打开 turbo 并设置 PL1 56w PL2 90w  将 kexts 留在系统中并 60mins 执行一次
+  打开 turbo 并设置 PL1 56w PL2 90w  将 kexts 留在系统中并 60mins 执行一次
 
 >https://github.com/syscl/CPUTune
 >
@@ -295,13 +298,22 @@ ROM：修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空�
 
 ![TypOYq](https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/TypOYq.png)
 
+- BIOS降压
 
+  ``` shell
+  0x855 0x01
+  0x856 0x01
+  0x85B 0x64
+  0x85D 0x01
+  0xAFF 0x1E
+  0xB01 0x01
+  ```
+
+  
 
 ### 5.2 电池供电睡眠后耳机杂音
 
 注入ALC守护进程即可
-
-
 
 
 
@@ -333,10 +345,6 @@ ROM：修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空�
 
 
 
-
-
-
-
 ## 其他待整理
 
 ### ACPI整理：
@@ -344,7 +352,7 @@ ROM：修改为en0的网卡mac地址 注意删掉: 最后四位与前面有空�
 > 笔记本背光亮度调节 SSDT-PNLF.aml SSDT-ALS0.aml
 > 睡眠秒唤醒 SSDT-GPRW SSDT-UPRW
 
-不通用的ACPI
+ACPI
 
 > 电量显示0 SSDT-BATT.aml
 > 节能 SSDT-PLUG
