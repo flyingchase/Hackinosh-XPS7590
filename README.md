@@ -94,22 +94,7 @@ BIOS 设置：
 
 ​	ThunderBolt Auto Switch：取消 AutoSwitch 勾选 Native Enumeration
 
-​	BIOS修改：
 
-``` shell
-setup_var 0x4F0 0x01
-setup_var 0x4F6 0x01
-```
-
-关闭其他 type-c 和tb3 相关的 ssdt 使用TbtOnPch.aml 并 patch 修改_E42 to XE42 
-
-重置 nvrm 后即可
-
-<img src="https://cdn.jsdelivr.net/gh/flyingchase/Private-Img@master/uPic/6XeA6p.png" alt="6XeA6p" style="zoom:50%;" />
-
-注意第一次睡眠前拔掉雷电设备或者采用开机后即睡眠再唤醒
-
-感谢群内大佬！ 
 
 ### 3.5 关于0.8ghz锁频
 
