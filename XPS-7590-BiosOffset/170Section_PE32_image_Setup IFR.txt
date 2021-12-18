@@ -7882,7 +7882,8 @@ It is recommended that Microsoft(R) Windows users set this field to 'PCIe', whil
 0x4C0E0 		End If {29 02}
 0x4C0E2 		Suppress If: {0A 82}
 0x4C0E4 			Question Ref: 0x1010 {40 84 CB 02}
-0x4C0E8 				8 Bit Unsigned Int: 0x {42 03 0D}
+0x4C0E8 				8 Bit Unsigned Int: 0x
+ {42 03 0D}
 0x4C0EB 				Less Than {33 02}
 0x4C0ED 			End {29 02}
 0x4C0EF 			Numeric: P-State Ratio (572520102637273748-572520102637273748) , Variable: 0x737 {07 91 B9 02 D5 02 D8 02 01 00 37 07 10 10 00 7F 00}
@@ -11065,7 +11066,6 @@ It is recommended that Microsoft(R) Windows users set this field to 'PCIe', whil
 0x513BC 			End {29 02}
 0x513BE 		End If {29 02}
 0x513C0 		Numeric: GT Voltage Offset (572520102637273748-572520102637273748) , Variable: 0xAFF {07 94 7A 14 7C 14 C7 04 01 00 FF 0A 10 11 00 00 E8 03 01 00}
-0x513D4 			Default: 16 Bit, Value: 0x0 {5B 07 00 00 01 00 00}
 0x513DB 		End {29 02}
 0x513DD 		Setting: Offset Prefix, Variable: 0xB01 {05 91 CB 13 CE 13 C8 04 01 00 01 0B 10 10 00 01 00}
 0x513EE 			Option: +, Value: 0x0 {09 07 33 03 30 00 00}
